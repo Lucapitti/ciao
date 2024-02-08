@@ -21,7 +21,7 @@ size_t	len(const char *s)
 	size_t	len;
 
 	len = 0;
-	while (s[len])
+	while (s[len] && s[len] != EOF)
 		len++;
 	return (len);
 }
@@ -104,14 +104,11 @@ char *get_next_line(int fd)
 {
 	static char	*mem;
 	char		*s;
-	size_t			check;
-	int			i;
+	size_t		check;
+	int		i;
 	char		*ret;
-	char c[BUFFER_SIZE];
+	char		 c[BUFFER_SIZE + 1];
 
-	if (!c)
-		return NULL;
-	mem = NULL;
 	if (mem)
 	{
 		s = (char *)malloc(len(mem));
@@ -119,11 +116,10 @@ char *get_next_line(int fd)
 			return (NULL);
 		ft_strlcpy(s, mem, BUFFER_SIZE);
 	}
-	else
-		s = NULL;
 	check = 1;
 	while (check && read(fd, c, BUFFER_SIZE) > 0)
 	{
+		c[BUFFER_SIZE] = 0;
 		i = 0;
 		s = ft_strjoin(s, c);
 		while (i < BUFFER_SIZE && check)
@@ -148,7 +144,7 @@ int main(void) {
     int fd;
     char *line;
 
-    fd = open("gnlTester-master/files/41_with_nl", O_RDONLY);
+    fd = open("get_next_line_utils.c", O_RDONLY);
     if (fd == -1) {
         perror("Error opening file");
         return 1;
