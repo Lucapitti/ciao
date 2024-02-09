@@ -14,14 +14,12 @@
 #include <fcntl.h>
 #include <stdio.h>
 
-#define BUFFER_SIZE 1
-
 size_t	len(const char *s)
 {
 	size_t	len;
 
 	len = 0;
-	while (s[len] && s[len] != EOF)
+	while (s && s[len] && s[len] != '\177')
 		len++;
 	return (len);
 }
@@ -80,7 +78,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (final);
 }
 
-char	*ft_substr(const char *s, size_t start, size_t len)
+char	*ft_substr(char *s, size_t start, size_t len)
 {
 	char	*substr;
 	size_t	i;
@@ -91,7 +89,7 @@ char	*ft_substr(const char *s, size_t start, size_t len)
 	substr = (char *)malloc((len + 1) * sizeof(char));
 	if (!substr)
 		return (NULL);
-	while (start < len && i < len)
+	while (i < len)
 	{
 		substr[i] = s[start + i];
 		i++;
@@ -104,21 +102,31 @@ char *get_next_line(int fd)
 {
 	static char	*mem;
 	char		*s;
-	size_t		check;
-	int		i;
+	size_t			check;
+	int			i;
 	char		*ret;
-	char		 c[BUFFER_SIZE + 1];
+	char *c;
 
+	if (!c)
+		return NULL;
 	if (mem)
 	{
-		s = (char *)malloc(len(mem));
+		s = (char *)malloc(len(mem) + 1);
 		if (!s)
 			return (NULL);
 		ft_strlcpy(s, mem, BUFFER_SIZE);
 	}
+	else
+		s = NULL;
 	check = 1;
-	while (check && read(fd, c, BUFFER_SIZE) > 0)
+	while (check)
 	{
+		c = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
+		if (read(fd, c, BUFFER_SIZE) <= 0)
+		{
+			check--;
+			break;
+		}
 		c[BUFFER_SIZE] = 0;
 		i = 0;
 		s = ft_strjoin(s, c);
@@ -128,33 +136,11 @@ char *get_next_line(int fd)
 				check--;
 			i++;
 		}
+		free(c);
 	}
-	while (s && s[check] != 0 && s[check] != '\n')
+	while (s && s[check] != 0 && s[check] != '\n' && s[check] != '\177')
 		check++;
-	mem = ft_substr(s, check + 1, len(s) - (check + 1));
+	mem = ft_substr(s, check + 1, len(s) - (check));
 	ret = ft_substr(s, 0, check + 1);
-	free (s);
 	return (ret);
-}
-// fallo per me
-#include <stdio.h>
-#include <unistd.h>
-
-int main(void) {
-    int fd;
-    char *line;
-
-    fd = open("get_next_line_utils.c", O_RDONLY);
-    if (fd == -1) {
-        perror("Error opening file");
-        return 1;
-    }
-
-    while ((line = get_next_line(fd)) != NULL) {
-        printf("Line read: %s", line);
-        free(line);
-    }
-    close(fd);
-
-    return 0;
 }
