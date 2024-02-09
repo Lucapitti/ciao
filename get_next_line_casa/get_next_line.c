@@ -47,7 +47,7 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 	return (i);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	int		i;
 	int		j;
@@ -75,6 +75,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		j++;
 	}
 	final[i + j] = 0;
+	free(s1);
 	return (final);
 }
 
@@ -107,20 +108,31 @@ char *get_next_line(int fd)
 	char		*ret;
 	char *c;
 
-	if (!c)
-		return NULL;
+	i = 0;
 	if (mem)
 	{
 		s = (char *)malloc(len(mem) + 1);
 		if (!s)
 			return (NULL);
 		ft_strlcpy(s, mem, BUFFER_SIZE);
+		while (s[i])
+		{
+			if (s[i] == '\n')
+			{
+				mem = ft_substr(s, i + 1, len(s) - (i));
+				ret = ft_substr(s, 0, i + 1);
+				return (ret);
+			}
+			i++;
+		}
 	}
 	else
 		s = NULL;
+
 	check = 1;
 	while (check)
 	{
+		i = 0;
 		c = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
 		if (read(fd, c, BUFFER_SIZE) <= 0)
 		{
@@ -128,7 +140,6 @@ char *get_next_line(int fd)
 			break;
 		}
 		c[BUFFER_SIZE] = 0;
-		i = 0;
 		s = ft_strjoin(s, c);
 		while (i < BUFFER_SIZE && check)
 		{
