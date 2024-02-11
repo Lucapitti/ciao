@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <fcntl.h>
+#include <stdio.h>
 
 char *get_next_line(int fd)
 {
@@ -71,3 +73,4 @@ char *get_next_line(int fd)
 	free (s);
 	return (ret);
 }
+
