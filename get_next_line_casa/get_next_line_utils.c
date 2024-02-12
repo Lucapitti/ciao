@@ -17,7 +17,7 @@ size_t	len(const char *s)
 	size_t	len;
 
 	len = 0;
-	while (s && s[len])
+	while (s && s[len] && s[len] != '\177')
 		len++;
 	return (len);
 }
