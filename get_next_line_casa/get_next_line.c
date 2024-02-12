@@ -71,9 +71,24 @@ char *get_next_line(int fd)
 	}
 	while (s && *(s + check) != 0 && *(s + check) != '\n' && *(s + check) != -1)
 		check++;
-	if (check - len(s) != 0)
-		mem = ft_substr(s, check + 1, len(s) - (check));
+	mem = ft_substr(s, check + 1, len(s) - (check));
+	if (check - len(s) == 0)
+		free(mem);
 	ret = ft_substr(s, 0, check + 1);
 	free (s);
+	if (*ret == 0)
+		return (NULL);
 	return (ret);
+}
+
+int main()
+{
+	int fd = open("43_with_nl.txt", O_RDONLY);
+	char *line;
+	int i = 60;
+	while (i-- && ((line = get_next_line(fd)) != NULL))
+	{
+		printf("line read: %s", line);
+		free(line);
+	}
 }
