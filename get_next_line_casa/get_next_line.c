@@ -6,7 +6,7 @@
 /*   By: lpittigl <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 20:23:38 by lpittigl          #+#    #+#             */
-/*   Updated: 2024/03/08 19:30:42 by lpittigl         ###   ########.fr       */
+/*   Updated: 2024/03/08 19:43:15 by lpittigl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,6 @@ char *get_next_line(int fd)
 	while (s && *(s + check) != 0 && *(s + check) != '\n' && *(s + check) != -1)
 		check++;
 	mem = ft_substr(s, check + 1, len(s) - (check));
-	if (check - len(s) == 0)
-		free(mem);
 	ret = ft_substr(s, 0, check + 1);
 	free (s);
 	return (ret);
