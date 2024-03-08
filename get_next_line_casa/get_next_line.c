@@ -6,7 +6,7 @@
 /*   By: lpittigl <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 20:23:38 by lpittigl          #+#    #+#             */
-/*   Updated: 2024/01/30 20:23:40 by lpittigl         ###   ########.fr       */
+/*   Updated: 2024/03/08 19:30:42 by lpittigl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ char *get_next_line(int fd)
 	static char	*mem;
 	char		*s;
 	size_t		check;
-	size_t		i;
+	ssize_t		i;
 	char		*ret;
 	char 		*c;
-	size_t		bytes_read;
+	ssize_t		bytes_read;
 
 	if (fd < 0 || fd >= 1000 || BUFFER_SIZE <= 0)
-		return (0);
+		return (NULL);
 	i = 0;
 	if (mem)
 	{
@@ -35,7 +35,7 @@ char *get_next_line(int fd)
 		free (mem);
 		while (s[i])
 		{
-			if (s[i] == '\n')
+			if (s[i] == '\n' || s[i] == -1)
 			{
 				mem = ft_substr(s, i + 1, len(s) - (i));
 				ret = ft_substr(s, 0, i + 1);
@@ -76,7 +76,6 @@ char *get_next_line(int fd)
 		free(mem);
 	ret = ft_substr(s, 0, check + 1);
 	free (s);
-	if (*ret == 0)
-		return (NULL);
 	return (ret);
 }
+

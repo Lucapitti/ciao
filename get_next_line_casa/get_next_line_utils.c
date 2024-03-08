@@ -6,7 +6,7 @@
 /*   By: lpittigl <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 17:52:29 by lpittigl          #+#    #+#             */
-/*   Updated: 2024/02/03 17:52:30 by lpittigl         ###   ########.fr       */
+/*   Updated: 2024/03/08 19:31:16 by lpittigl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ char	*ft_substr(char *s, size_t start, size_t len)
 	size_t	i;
 
 	i = 0;
-	if (!s)
+	if (!s || len == 0 || s[i] == 0)
 		return (NULL);
 	substr = (char *)malloc((len + 1) * sizeof(char));
 	if (!substr)
@@ -96,3 +96,4 @@ char	*ft_substr(char *s, size_t start, size_t len)
 	substr[i] = 0;
 	return (substr);
 }
+
