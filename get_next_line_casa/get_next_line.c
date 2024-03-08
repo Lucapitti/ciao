@@ -80,15 +80,3 @@ char *get_next_line(int fd)
 		return (NULL);
 	return (ret);
 }
-
-int main()
-{
-	int fd = open("43_with_nl.txt", O_RDONLY);
-	char *line;
-	int i = 60;
-	while (i-- && ((line = get_next_line(fd)) != NULL))
-	{
-		printf("line read: %s", line);
-		free(line);
-	}
-}
