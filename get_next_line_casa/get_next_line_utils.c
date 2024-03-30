@@ -45,10 +45,8 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 	return (i);
 }
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_strjoin(char *s1, char *s2, int i, int j)
 {
-	int		i;
-	int		j;
 	char	*final;
 
 	if (!s2)
@@ -73,11 +71,12 @@ char	*ft_strjoin(char *s1, char *s2)
 		j++;
 	}
 	final[i + j] = 0;
-	free(s1);
+	if (s1)
+		free(s1);
 	return (final);
 }
 
-char	*ft_substr(char *s, size_t start, size_t len)
+char	*ft_substr(char *s, size_t start, size_t len, int if_free)
 {
 	char	*substr;
 	size_t	i;
@@ -94,6 +93,7 @@ char	*ft_substr(char *s, size_t start, size_t len)
 		i++;
 	}
 	substr[i] = 0;
+	if(if_free == 1)
+		free(s);
 	return (substr);
 }
-
