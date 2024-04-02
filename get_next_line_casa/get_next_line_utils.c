@@ -17,6 +17,8 @@ size_t	len(const char *s)
 	size_t	len;
 
 	len = 0;
+	if (s == NULL)
+		return (0);
 	while (s && s[len] && s[len] != -1)
 		len++;
 	return (len);
@@ -51,20 +53,17 @@ char	*ft_strjoin(char *s1, char *s2, int i, int j)
 
 	if (!s2)
 		return (NULL);
-	i = 0;
-	j = 0;
-	if (!s1)
-		final = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
-	else
-		final = (char *)malloc((len(s1) + BUFFER_SIZE + 1) * sizeof(char));
+	final = (char *)malloc((len(s1) + BUFFER_SIZE + 1) * sizeof(char));
 	if (!final)
 		return (NULL);
 	if (s1)
+	{
 		while (*(s1 + i))
 		{
 			final[i] = *(s1 + i);
 			i++;
 		}
+	}
 	while (*(s2 + j) != 0)
 	{
 		final[i + j] = *(s2 + j);
@@ -93,7 +92,7 @@ char	*ft_substr(char *s, size_t start, size_t len, int if_free)
 		i++;
 	}
 	substr[i] = 0;
-	if(if_free == 1)
+	if (if_free == 1)
 		free(s);
 	return (substr);
 }
