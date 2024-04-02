@@ -20,6 +20,8 @@ int	recover_mem(char **s, char **mem)
 	i = 0;
 	*s = (char *)malloc(len(*mem) + 1);
 	if (!s)
+		return (1);
+	if (!s)
 		return (0);
 	ft_strlcpy(*s, *mem, BUFFER_SIZE);
 	free (*mem);
@@ -36,7 +38,7 @@ int	recover_mem(char **s, char **mem)
 	return (0);
 }
 
-void	read_form_file(char **s, int fd, ssize_t i)
+int	read_form_file(char **s, int fd, ssize_t i)
 {
 	int		bytes_read;
 	char	*c;
@@ -46,6 +48,8 @@ void	read_form_file(char **s, int fd, ssize_t i)
 	{
 		i = 0;
 		c = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
+		if (!c)
+			return (-1);
 		bytes_read = read(fd, c, BUFFER_SIZE);
 		if (bytes_read <= 0)
 		{
@@ -59,9 +63,10 @@ void	read_form_file(char **s, int fd, ssize_t i)
 				bytes_read = 0;
 		free(c);
 	}
+	return (0);
 }
 
-char *get_next_line(int fd)
+char	*get_next_line(int fd)
 {
 	static char	*mem;
 	char		*s;
@@ -74,13 +79,24 @@ char *get_next_line(int fd)
 	{
 		if (*mem == '\0')
 			free(mem);
-		else if(recover_mem(&s, &mem))
+		else if (recover_mem(&s, &mem))
 			return (s);
 	}
 	read_form_file(&s, fd, 0);
 	check = 0;
-	while (s != NULL && *(s + check) != 0 && *(s + check) != '\n' && *(s + check) != -1)
+	while (s != NULL && *(s + check) != 0
+		&& *(s + check) != '\n' && *(s + check) != -1)
 		check++;
 	mem = ft_substr(s, check + 1, len(s) - (check), 0);
 	return (ft_substr(s, 0, check + 1, 1));
 }
+// int main() {
+// 	int fd = open("get_next_line.h", O_RDONLY);
+// 	char *s;
+// 	while((s = get_next_line(fd)))
+// 	{
+// 		printf("%s", s);
+// 		free(s);
+// 	}
+// 	close(fd);
+// }
