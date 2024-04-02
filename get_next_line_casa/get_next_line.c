@@ -21,8 +21,6 @@ int	recover_mem(char **s, char **mem)
 	*s = (char *)malloc(len(*mem) + 1);
 	if (!s)
 		return (1);
-	if (!s)
-		return (0);
 	ft_strlcpy(*s, *mem, BUFFER_SIZE);
 	free (*mem);
 	while ((*s)[i] != 0)
@@ -82,7 +80,8 @@ char	*get_next_line(int fd)
 		else if (recover_mem(&s, &mem))
 			return (s);
 	}
-	read_form_file(&s, fd, 0);
+	if(read_form_file(&s, fd, 0) == -1)
+		return (NULL);
 	check = 0;
 	while (s != NULL && *(s + check) != 0
 		&& *(s + check) != '\n' && *(s + check) != -1)
@@ -90,13 +89,3 @@ char	*get_next_line(int fd)
 	mem = ft_substr(s, check + 1, len(s) - (check), 0);
 	return (ft_substr(s, 0, check + 1, 1));
 }
-// int main() {
-// 	int fd = open("get_next_line.h", O_RDONLY);
-// 	char *s;
-// 	while((s = get_next_line(fd)))
-// 	{
-// 		printf("%s", s);
-// 		free(s);
-// 	}
-// 	close(fd);
-// }
