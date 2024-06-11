@@ -11,7 +11,7 @@ typedef struct t_list
 {
 	int	row;
 	int	column;
-	t_list *next;
+	struct t_list *next;
 }	t_list;
 
 t_list	*ft_lstnew(int column, int row)
@@ -39,10 +39,9 @@ int	*read_map(char *file_name, t_list **entrance, int *n_collectibles)
 	row = 0;
 	column = 0;
 	fd = open (file_name, O_RDONLY);
-	temp = get_next_temp(fd);
+	temp = get_next_line(fd);
 	while (temp)
 	{
-		temp = get_next_temp(fd);
 		while (temp[column])
 		{
 			if (temp[column] == 'P')
@@ -62,6 +61,7 @@ int	*read_map(char *file_name, t_list **entrance, int *n_collectibles)
 		}
 		old_column = column;
 		free(temp);
+		temp = get_next_line(fd);
 		row++;
 	}
 	close (fd);
