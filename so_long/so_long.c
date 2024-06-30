@@ -1,18 +1,4 @@
-#include <stdlib.h>
-#include <unistd.h>
-#include <fcntl.h>
-
-#define RIGHT 1
-#define LEFT -1
-#define UP 2
-#define DOWN -2
-
-typedef struct t_list
-{
-	int	row;
-	int	column;
-	struct t_list *next;
-}	t_list;
+#include "so_long.h"
 
 t_list	*ft_lstnew(int column, int row)
 {
@@ -28,7 +14,7 @@ t_list	*ft_lstnew(int column, int row)
 	return (head);
 }
 
-int	*read_map(char *file_name, t_list **entrance, int *n_collectibles)
+int	read_map(char *file_name, t_list **entrance, int *n_collectibles)
 {
 	char	*temp;
 	int		row;
@@ -98,6 +84,7 @@ char	**zero_matrix(int n_lines, char **map, int width)
 		visited[j] = (char *)malloc(width + 1 * sizeof(int));
 		bzero(visited[j], width + 1);
 	}
+	return (visited);
 }
 
 int	update_lst(char **map, t_list *current, int which, int *n_collectibles)
