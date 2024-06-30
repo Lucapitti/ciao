@@ -86,17 +86,17 @@ char	**init_map(char *file_name, int n_lines)
 	return (map);
 }
 
-int	**zero_matrix(int n_lines, char **map, int width)
+char	**zero_matrix(int n_lines, char **map, int width)
 {
-	int	**visited;
-	int	j;
+	char	**visited;
+	int		j;
 
 	j = 0;
-	visited = (int **)malloc(n_lines * sizeof(int *));
+	visited = (char **)malloc(n_lines * sizeof(int *));
 	while (j < n_lines)	
 	{
-		visited[j] = (int *)malloc(width * sizeof(int));
-		bzero(visited[j], width);
+		visited[j] = (char *)malloc(width + 1 * sizeof(int));
+		bzero(visited[j], width + 1);
 	}
 }
 
@@ -120,7 +120,7 @@ int	update_lst(char **map, t_list *current, int which, int *n_collectibles)
 	}
 	return (0);
 }
-void	destroy_array(void **array, int n)
+void	destroy_array(char **array, int n)
 {
 	while (n--)
 		free (array[n]);
@@ -129,7 +129,7 @@ void	destroy_array(void **array, int n)
 
 int	is_valid(char **map, t_list *entrance, int n_lines, int n_collectibles)
 {
-	int		**visited;
+	char		**visited;
 	int		exit_flag;
 	int		width;
 	t_list	*current;
